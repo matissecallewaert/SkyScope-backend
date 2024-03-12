@@ -11,7 +11,7 @@ mod structs {
 
 use routes::image_routes::{delete_image, get_uploaded_images, upload_image};
 use routes::label_routes::start_label_tool;
-use routes::object_routes::{add_object_to_list, get_object_list};
+use routes::object_routes::get_object_list;
 
 use rocket::fs::FileServer;
 use std::fs;
@@ -44,7 +44,6 @@ async fn main() {
                 upload_image,
                 delete_image,
                 get_object_list,
-                add_object_to_list,
                 start_label_tool
             ],
         )
