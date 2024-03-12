@@ -21,14 +21,14 @@ fn index() -> &'static str {
     "Hello, world!"
 }
 
-#[get("/myrocket")]
-fn myrocket() -> String {
-    "My 🚀 server".to_string()
-}
-
 #[rocket::main]
 async fn main() {
     if let Err(e) = fs::create_dir_all("assets/uploads/images") {
+        println!("Failed to create directory: {}", e);
+        return;
+    }
+
+    if let Err(e) = fs::create_dir_all("assets/object_list") {
         println!("Failed to create directory: {}", e);
         return;
     }
@@ -39,7 +39,6 @@ async fn main() {
             "/api",
             routes![
                 index,
-                myrocket,
                 get_uploaded_images,
                 upload_image,
                 delete_image,
