@@ -11,14 +11,21 @@ mod structs {
 
 use routes::image_routes::{delete_image, get_uploaded_images, upload_image};
 use routes::label_routes::start_label_tool;
-use routes::object_routes::get_object_list;
+use routes::object_routes::{get_object_list, delete_object};
 
 use rocket::fs::FileServer;
+use rocket::{options, response::status::NoContent};
+
 use std::fs;
 
 #[get("/")]
 fn index() -> &'static str {
     "Hello, world!"
+}
+
+#[options("/<_..>")]
+fn cors_preflight() -> NoContent {
+    NoContent
 }
 
 #[rocket::main]
@@ -38,12 +45,14 @@ async fn main() {
         .mount(
             "/api",
             routes![
+                cors_preflight,
                 index,
                 get_uploaded_images,
                 upload_image,
                 delete_image,
                 get_object_list,
-                start_label_tool
+                start_label_tool,
+                delete_object
             ],
         )
         .mount("/images", FileServer::from("assets/uploads/images"))
